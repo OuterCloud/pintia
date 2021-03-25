@@ -23,26 +23,26 @@ func NumbersSort(threeNumsStr string) (sortedNumbersStr string) {
 	sortedNumber := SortedNumber{Self: intNumber}
 	for i := 1; i < len(nums); i++ {
 		intNumber, _ := strconv.Atoi(nums[i])
-		InsertNumber(&sortedNumber, intNumber)
+		PutNumberOnTree(&sortedNumber, intNumber)
 	}
-	PrintSortedNumber(sortedNumber)
+	GetNumberOffTree(sortedNumber)
 	sortedNumbersStr = strings.Join(sortedNumbers, "->")
 	return
 }
 
-// PrintSortedNumber 打印已排序数字
-func PrintSortedNumber(sortedNumber SortedNumber) {
+// GetNumberOffTree 把整数从树上摘下来
+func GetNumberOffTree(sortedNumber SortedNumber) {
 	if sortedNumber.Left != nil {
-		PrintSortedNumber(*sortedNumber.Left)
+		GetNumberOffTree(*sortedNumber.Left)
 	}
 	sortedNumbers = append(sortedNumbers, strconv.Itoa(sortedNumber.Self))
 	if sortedNumber.Right != nil {
-		PrintSortedNumber(*sortedNumber.Right)
+		GetNumberOffTree(*sortedNumber.Right)
 	}
 }
 
-// InsertNumber 插入数字
-func InsertNumber(sortedNumber *SortedNumber, intNumber int) {
+// PutNumberOnTree 把整数放到树上
+func PutNumberOnTree(sortedNumber *SortedNumber, intNumber int) {
 	if intNumber >= sortedNumber.Self {
 		// fmt.Printf("%+v大于%+v\n", intNumber, sortedNumber.Self)
 		if sortedNumber.Right == nil {
@@ -50,7 +50,7 @@ func InsertNumber(sortedNumber *SortedNumber, intNumber int) {
 				Self: intNumber,
 			}
 		} else {
-			InsertNumber(sortedNumber.Right, intNumber)
+			PutNumberOnTree(sortedNumber.Right, intNumber)
 		}
 	} else {
 		// fmt.Printf("%+v小于%+v\n", intNumber, sortedNumber.Self)
@@ -59,7 +59,7 @@ func InsertNumber(sortedNumber *SortedNumber, intNumber int) {
 				Self: intNumber,
 			}
 		} else {
-			InsertNumber(sortedNumber.Left, intNumber)
+			PutNumberOnTree(sortedNumber.Left, intNumber)
 		}
 	}
 }
